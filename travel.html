@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>旅途印记 - 野生渔火的旅行故事</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind 配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E88E5',
+            secondary: '#FF9800',
+            accent: '#43A047',
+            dark: '#263238',
+            light: '#ECEFF1'
+          },
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .photo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+      .timeline-item {
+        @apply relative pl-8 pb-8 border-l-2 border-primary/30;
+      }
+      .timeline-item:last-child {
+        @apply pb-0;
+      }
+      .timeline-dot {
+        @apply absolute left-[-11px] top-0 w-4 h-4 rounded-full bg-primary;
+      }
+      .parallax {
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .hover-lift {
+        @apply transition-transform duration-300 hover:-translate-y-2;
+      }
+      .photo-overlay {
+        @apply absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center;
+      }
+    }
+  </style>
+</head>
+
+<body class="font-inter bg-light text-dark antialiased">
+  <!-- 导航栏 -->
+  <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="#" class="text-2xl font-bold text-primary flex items-center">
+        <i class="fa fa-paper-plane mr-2"></i>
+        <span>旅途印记</span>
+      </a>
+      
+      <!-- 桌面导航 -->
+      <nav class="hidden md:flex space-x-8">
+        <a href="#hero" class="font-medium hover:text-primary transition-colors">首页</a>
+        <a href="#highlights" class="font-medium hover:text-primary transition-colors">旅行亮点</a>
+        <a href="#photos" class="font-medium hover:text-primary transition-colors">照片集</a>
+        <a href="#stories" class="font-medium hover:text-primary transition-colors">旅行故事</a>
+        <a href="#about" class="font-medium hover:text-primary transition-colors">关于我</a>
+      </nav>
+      
+      <!-- 移动端菜单按钮 -->
+      <button id="menu-toggle" class="md:hidden text-dark focus:outline-none">
+        <i class="fa fa-bars text-2xl"></i>
+      </button>
+    </div>
+    
+    <!-- 移动端导航菜单 -->
+    <div id="mobile-menu" class="md:hidden hidden bg-white border-t">
+      <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+        <a href="#hero" class="py-2 font-medium hover:text-primary transition-colors">首页</a>
+        <a href="#highlights" class="py-2 font-medium hover:text-primary transition-colors">旅行亮点</a>
+        <a href="#photos" class="py-2 font-medium hover:text-primary transition-colors">照片集</a>
+        <a href="#stories" class="py-2 font-medium hover:text-primary transition-colors">旅行故事</a>
+        <a href="#about" class="py-2 font-medium hover:text-primary transition-colors">关于我</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 英雄区域 -->
+  <section id="hero" class="relative h-screen flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <img src="https://picsum.photos/id/1036/1920/1080" alt="旅行背景" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/30"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 z-10 text-center">
+      <h1 class="text-[clamp(2.5rem,8vw,5rem)] font-bold text-white mb-4 text-shadow animate-fade-in">
+        这个世界很精彩，
+        有很多彩蛋
+      </h1>
+      <p class="text-[clamp(1rem,3vw,1.5rem)] text-white/90 max-w-3xl mx-auto mb-8 text-shadow">
+        用镜头记录瞬间，用文字讲述故事，以为期待再次出发，其实回头看发现自己一直在路上
+      </p>
+      <a href="#highlights" class="inline-block bg-primary hover:bg-primary/90 text-white font-medium py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 duration-300">
+        开始探索 <i class="fa fa-compass ml-2"></i>
+      </a>
+    </div>
+    
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <a href="#highlights" class="text-white text-3xl">
+        <i class="fa fa-chevron-down"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- 旅行亮点 -->
+  <section id="highlights" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold text-dark mb-4">旅行亮点</h2>
+        <div class="w-20 h-1 bg-primary mx-auto"></div>
+        <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+          每一次旅行都有难忘的瞬间，这些亮点构成了我旅程中最珍贵的记忆
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- 亮点卡片 1 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg hover-lift">
+          <div class="aspect-[ 16/9 ] overflow-hidden">
+            <img src="travel_20250623135436.jpg" alt="山景" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110">
+          </div>
+          <div class="p-6">
+            <div class="flex items-center mb-4">
+              <span class="bg-primary/10 text-primary text-sm font-medium px-3 py-1 rounded-full">自然奇观</span>
+              <span class="ml-auto text-gray-500 text-sm"><i class="fa fa-calendar mr-1"></i> 2024.07</span>
+            </div>
+            <h3 class="text-xl font-bold mb-3">雨崩山间的晨野</h3>
+            <p class="text-gray-600 mb-4">
+              泥泞里嵌着前世的马蹄印吗？当雨停时，雨丝裹着杜鹃的气息漫过肩头，才惊觉裤脚已沾染上草甸的绿—— 原来徒步不是丈量土地，是让山风把自己裁成经幡的一角，在海拔三千米的风里，和松茸、苔藓、以及偶尔窜过的小兽，共享一段被时光遗忘的褶皱。
+            </p>
+            <a href="#story-1" class="inline-flex items-center text-primary font-medium hover:underline">
+              查看更多 <i class="fa fa-long-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+        
+        <!-- 亮点卡片 2 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg hover-lift">
+          <div class="aspect-[ 16/9 ] overflow-hidden">
+            <img src="travel_20250623141320.jpg" alt="城市" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110">
+          </div>
+          <div class="p-6">
+            <div class="flex items-center mb-4">
+              <span class="bg-secondary/10 text-secondary text-sm font-medium px-3 py-1 rounded-full">城市探索</span>
+              <span class="ml-auto text-gray-500 text-sm"><i class="fa fa-calendar mr-1"></i> 2024.02</span>
+            </div>
+            <h3 class="text-xl font-bold mb-3">赛博落日山城</h3>
+            <p class="text-gray-600 mb-4">
+              和好友漫步在山城的冬夜里，轻轨穿楼时抖落满街灯影，梯坎缝里的火锅香漫过玻璃幕墙，吊脚楼的灯笼与立交桥的钢筋，在雾中拧成液态的魔幻烟火。山城，我们会再来的。
+           </p>
+            <a href="#story-2" class="inline-flex items-center text-primary font-medium hover:underline">
+              查看更多 <i class="fa fa-long-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+        
+        <!-- 亮点卡片 3 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg hover-lift">
+          <div class="aspect-[ 16/9 ] overflow-hidden">
+            <img src="travel_20250623161353.jpg" alt="海滩" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110">
+          </div>
+          <div class="p-6">
+            <div class="flex items-center mb-4">
+              <span class="bg-accent/10 text-accent text-sm font-medium px-3 py-1 rounded-full">海岛度假</span>
+              <span class="ml-auto text-gray-500 text-sm"><i class="fa fa-calendar mr-1"></i> 2024.01</span>
+            </div>
+            <h3 class="text-xl font-bold mb-3">漫步东西涌</h3>
+            <p class="text-gray-600 mb-4">
+              我们翻山越岭，沿着海岸线狂奔，任由海浪打湿我们的鞋裤，我们是如此喜爱大海，永远都忘不了那个在海边边播放Coldplay的《Yellow》边等待落日的午后。
+            </p>
+            <a href="#story-3" class="inline-flex items-center text-primary font-medium hover:underline">
+              查看更多 <i class="fa fa-long-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 照片集 -->
+  <section id="photos" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold text-dark mb-4">旅行照片集</h2>
+        <div class="w-20 h-1 bg-primary mx-auto"></div>
+        <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+          用镜头捕捉旅途中的美好瞬间，每一张照片都讲述着一个独特的故事
+        </p>
+      </div>
+      
+      <!-- 照片筛选 -->
+      <div class="flex flex-wrap justify-center gap-3 mb-10">
+        <button class="photo-filter active bg-primary text-white px-5 py-2 rounded-full shadow-md hover:shadow-lg transition-all" data-filter="all">
+          全部照片
+        </button>
+        <button class="photo-filter bg-white text-gray-700 px-5 py-2 rounded-full shadow-md hover:bg-primary hover:text-white transition-all" data-filter="nature">
+          自然风光
+        </button>
+        <button class="photo-filter bg-white text-gray-700 px-5 py-2 rounded-full shadow-md hover:bg-primary hover:text-white transition-all" data-filter="city">
+          城市建筑
+        </button>
+        <button class="photo-filter bg-white text-gray-700 px-5 py-2 rounded-full shadow-md hover:bg-primary hover:text-white transition-all" data-filter="food">
+          美食体验
+        </button>
+        <button class="photo-filter bg-white text-gray-700 px-5 py-2 rounded-full shadow-md hover:bg-primary hover:text-white transition-all" data-filter="people">
+          人文风情
+        </button>
+      </div>
+      
+      <!-- 照片网格 -->
+      <div class="photo-grid">
+        <!-- 自然照片 -->
+        <div class="photo-item group" data-category="nature">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250623135503.jpg" alt="山景" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250623135503.jpg" data-title="阿布吉措">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">阿布吉措</h4>
+              <p class="text-white/80 text-sm">自然风光</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="photo-item group" data-category="nature">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250624203246.jpg" alt="稻城亚丁" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250624203246.jpg" data-title="稻城亚丁">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">稻城亚丁</h4>
+              <p class="text-white/80 text-sm">自然风光</p>
+            </div>
+          </div>
+        </div>
+
+    <div class="photo-item group" data-category="nature">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250624203843.jpg" alt="云南大理" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250624203843.jpg" data-title="云南大理">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">云南大理</h4>
+              <p class="text-white/80 text-sm">自然风光</p>
+            </div>
+          </div>
+        </div>
+
+    <div class="photo-item group" data-category="nature">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250624204229.jpg" alt="广西桂林" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250624204229.jpg" data-title="广西桂林">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">广西桂林</h4>
+              <p class="text-white/80 text-sm">自然风光</p>
+            </div>
+          </div>
+        </div>
+
+      <div class="photo-item group" data-category="nature">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250623135450.jpg" alt="阿布吉措" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250623135450.jpg" data-title="阿布吉措">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">阿布吉措</h4>
+              <p class="text-white/80 text-sm">自然风光</p>
+            </div>
+          </div>
+        </div>
+
+       <div class="photo-item group" data-category="nature">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250624222108.jpg" alt="登顶泰山" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250624222108.jpg" data-title="登顶泰山">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">登顶泰山</h4>
+              <p class="text-white/80 text-sm">自然风光</p>
+            </div>
+          </div>
+         </div>
+       
+
+
+
+
+
+
+        
+        <!-- 城市照片 -->
+        <div class="photo-item group" data-category="city">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250624223208.jpg" alt="城市" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250624223208.jpg" data-title="北京人民大会堂">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">北京人民大会堂</h4>
+              <p class="text-white/80 text-sm">城市建筑</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="photo-item group" data-category="city">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250624223636.jpg" alt="建筑" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250624223636.jpg" data-title="上海外滩">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">上海外滩</h4>
+              <p class="text-white/80 text-sm">城市建筑</p>
+            </div>
+          </div>
+        </div>
+
+         <div class="photo-item group" data-category="city">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250624223829.jpg" alt="建筑" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250624223829.jpg" data-title="天津街道">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">天津街道</h4>
+              <p class="text-white/80 text-sm">城市建筑</p>
+            </div>
+          </div>
+        </div>
+
+       <div class="photo-item group" data-category="city">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250624224028.jpg" alt="建筑" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250624224028.jpg" data-title="武汉黄鹤楼">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">武汉黄鹤楼</h4>
+              <p class="text-white/80 text-sm">城市建筑</p>
+            </div>
+          </div>
+        </div>
+
+         <div class="photo-item group" data-category="city">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250625104451.jpg" alt="建筑" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250625104451.jpg" data-title="澳门伦敦人">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">澳门伦敦人</h4>
+              <p class="text-white/80 text-sm">城市建筑</p>
+            </div>
+          </div>
+        </div>
+
+         <div class="photo-item group" data-category="city">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250625105051.jpg" alt="建筑" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250625105051.jpg" data-title="江西南昌">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">江西南昌</h4>
+              <p class="text-white/80 text-sm">城市建筑</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="photo-item group" data-category="city">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250625105748.jpg" alt="建筑" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250625105748.jpg" data-title="浙江绍兴">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">浙江绍兴</h4>
+              <p class="text-white/80 text-sm">城市建筑</p>
+            </div>
+          </div>
+        </div>
+
+         <div class="photo-item group" data-category="city">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250625105800.jpg" alt="建筑" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250625105800.jpg" data-title="香港维港">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">香港维港</h4>
+              <p class="text-white/80 text-sm">城市建筑</p>
+            </div>
+          </div>
+        </div>
+
+         <div class="photo-item group" data-category="city">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250625105909.jpg" alt="建筑" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250625105909.jpg" data-title="重庆夜景">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">重庆夜景</h4>
+              <p class="text-white/80 text-sm">城市建筑</p>
+            </div>
+          </div>
+        </div>
+
+             <div class="photo-item group" data-category="city">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250625105827.jpg" alt="建筑" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250625105827.jpg" data-title="天津瓷房子">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">天津瓷房子</h4>
+              <p class="text-white/80 text-sm">城市建筑</p>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        
+        <!-- 美食照片 -->
+        <div class="photo-item group" data-category="food">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250625105301.jpg" alt="美食" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250625105301.jpg" data-title="长沙臭豆腐">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">长沙臭豆腐</h4>
+              <p class="text-white/80 text-sm">美食体验</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="photo-item group" data-category="food">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250625222452.jpg" alt="美食" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250625222452.jpg" data-title="桂林米粉">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">桂林米粉</h4>
+              <p class="text-white/80 text-sm">美食体验</p>
+            </div>
+          </div>
+        </div>
+
+          <div class="photo-item group" data-category="food">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250625222500.jpg" alt="美食" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250625222500.jpg" data-title="柳州螺蛳粉">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">柳州螺蛳粉</h4>
+              <p class="text-white/80 text-sm">美食体验</p>
+            </div>
+          </div>
+        </div>
+
+           <div class="photo-item group" data-category="food">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250626192534.jpg" alt="美食" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250626192534.jpg" data-title="佛山双皮奶">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">佛山双皮奶</h4>
+              <p class="text-white/80 text-sm">美食体验</p>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+        
+        <div class="photo-item group" data-category="food">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250625222505.jpg" alt="美食" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250625222505.jpg" data-title="广东肠粉">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">广东肠粉</h4>
+              <p class="text-white/80 text-sm">美食体验</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 人文照片 -->
+        <div class="photo-item group" data-category="people">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250625110022.jpg" alt="人文" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250625110022.jpg" data-title="漓江唱晚">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">漓江唱晚</h4>
+              <p class="text-white/80 text-sm">人文风情</p>
+            </div>
+          </div>
+        </div>
+      
+        
+        <div class="photo-item group" data-category="people">
+          <div class="relative overflow-hidden rounded-xl shadow-lg">
+            <img src="travel_20250625105852.jpg" alt="人文" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="photo-overlay">
+              <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" data-src="travel_20250625105852.jpg" data-title="古刹前路">
+                <i class="fa fa-search-plus text-xl"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h4 class="text-white font-medium">古刹前路</h4>
+              <p class="text-white/80 text-sm">人文风情</p>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+      
+      <div class="text-center mt-12">
+        <button id="load-more" class="bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-all duration-300">
+          加载更多照片 <i class="fa fa-refresh ml-2"></i>
+        </button>
+      </div>
+
+
+      <!-- 旅行故事线 -->
+  <section id="stories" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold text-dark mb-4">旅行故事</h2>
+        <div class="w-20 h-1 bg-primary mx-auto"></div>
+        <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+          每一次旅行都是一段独特的故事，让我与你分享这些旅途中的感动与思考
+        </p>
+      </div>
+      
+      <div class="max-w-3xl mx-auto">
+        <!-- 时间线项目 1 -->
+        <div id="story-1" class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="text-xl font-bold text-dark">雨崩徒步之旅</h3>
+              <span class="bg-primary/10 text-primary text-sm font-medium px-3 py-1 rounded-full">2024.02</span>
+            </div>
+            <div class="flex flex-col md:flex-row gap-6">
+              <div class="md:w-1/2">
+                <p class="text-gray-600 mb-4">
+                  看着同伴背包上晃动的登山杖，与远处随风飘扬的经幡遥相呼应，突然意识到，我们这些徒步者，也是雨崩风景里独特的一抹灵动。
+                </p>
+                <p class="text-gray-600">
+                  徒步结束，回望来时的路，蜿蜒曲折消失在云雾深处。沿途的雪山、草原和藏族村落，每一处风景都让人震撼。脚上的水泡与酸痛提醒着这段旅程的不易，而心里的震撼与感动，却让我知道，这一切都值得。
+                </p>
+              </div>
+              <div class="md:w-1/2">
+                <div class="rounded-xl overflow-hidden shadow-md">
+                  <img src="travel_20250625225206.jpg" alt="雨崩" class="w-full h-48 object-cover">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 时间线项目 2 -->
+        <div id="story-2" class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="text-xl font-bold text-dark">重庆山城漫游</h3>
+              <span class="bg-primary/10 text-primary text-sm font-medium px-3 py-1 rounded-full">2023.11</span>
+            </div>
+            <div class="flex flex-col md:flex-row gap-6">
+              <div class="md:w-1/2">
+                <p class="text-gray-600 mb-4">
+                  走进山城巷陌的火锅店，沸腾的红汤咕嘟作响，牛油的香气钻进每一个毛孔。举箸夹起毛肚在锅里 “七上八下”，此刻的满足，是专属于重庆的滚烫滋味。
+                </p>
+                <p class="text-gray-600">
+                  沿着山城步道拾级而下，老旧的居民楼里飘出收音机的戏曲声。墙面上的爬山虎肆意生长，偶尔有阳光漏下，在石阶上洒下一片斑驳，诉说着岁月的故事。
+                </p>
+              </div>
+              <div class="md:w-1/2">
+                <div class="rounded-xl overflow-hidden shadow-md">
+                  <img src="travel_20250625225212.jpg" alt="重庆" class="w-full h-48 object-cover">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 时间线项目 3 -->
+        <div id="story-3" class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="text-xl font-bold text-dark">东涌西滩拾履</h3>
+              <span class="bg-primary/10 text-primary text-sm font-medium px-3 py-1 rounded-full">2023.07</span>
+            </div>
+            <div class="flex flex-col md:flex-row gap-6">
+              <div class="md:w-1/2">
+                <p class="text-gray-600 mb-4">
+                 背着背包踏上徒步去海边的路，汗水很快浸透了衣衫，可身旁朋友始终与我并肩，我们互相调侃着彼此狼狈的模样，累了就席地而坐，分享背包里带着的干粮，笑声回荡在山间。
+                </p>
+                <p class="text-gray-600">
+                  当那片期待已久的海终于出现在视野里，所有疲惫都化作了欢呼。我们雀跃着奔向沙滩，任由海风拂去一路的燥热，浪花轻拍双脚，带来丝丝清凉。和朋友一起在沙滩上追逐、嬉戏，捡贝壳、堆沙堡，仿佛回到了无忧无虑的童年。躺在细软的沙滩上，望着湛蓝的天空，听着彼此分享路上的感受，这一刻，时光仿佛静止。原来最美好的风景，不仅是眼前的大海，更是一路上有好友相伴，共同经历的那些美好与坚持。
+                </p>
+              </div>
+              <div class="md:w-1/2">
+                <div class="rounded-xl overflow-hidden shadow-md">
+                  <img src="travel_20250625225217.jpg" alt="大海" class="w-full h-48 object-cover">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 旅行数据统计 -->
+  <section class="py-20 bg-primary text-white parallax" style="background-image: url('https://picsum.photos/id/1036/1920/1080');">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold mb-4">我的国内旅行数据</h2>
+        <div class="w-20 h-1 bg-white mx-auto mb-8"></div>
+        <p class="text-lg text-white/80 max-w-2xl mx-auto">
+          用脚步丈量祖国大地，记录我在国内的旅行足迹
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- 数据卡片 1 -->
+        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl text-center hover:bg-white/20 transition-all">
+          <div class="text-4xl md:text-5xl font-bold mb-2 counter" data-target="23">23</div>
+          <p class="text-white/80">到访的省份</p>
+        </div>
+        
+        <!-- 数据卡片 2 -->
+        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl text-center hover:bg-white/20 transition-all">
+          <div class="text-4xl md:text-5xl font-bold mb-2 counter" data-target="45+">45+</div>
+          <p class="text-white/80">游览的城市</p>
+        </div>
+        
+        <!-- 数据卡片 3 -->
+        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl text-center hover:bg-white/20 transition-all">
+          <div class="text-4xl md:text-5xl font-bold mb-2 counter" data-target="3000+">3000+</div>
+          <p class="text-white/80">拍摄的照片 (千张)</p>
+        </div>
+        
+        <!-- 数据卡片 4 -->
+        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl text-center hover:bg-white/20 transition-all">
+          <div class="text-4xl md:text-5xl font-bold mb-2 counter" data-target="365">35+</div>
+          <p class="text-white/80">打卡地标数量</p>
+        </div>
+      </div>
+      
+      <div class="mt-16 bg-white/10 backdrop-blur-sm p-8 rounded-xl">
+        <h3 class="text-2xl font-bold mb-6 text-center">旅行目的地分布</h3>
+        <div class="h-80">
+          <canvas id="travelChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 关于我 -->
+  <section id="about" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold text-dark mb-4">关于我</h2>
+        <div class="w-20 h-1 bg-primary mx-auto"></div>
+        <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+          一个热爱旅行的探索者，希望背上背包用脚步丈量大地，看见向上的繁华，看见向下的质朴。向上盛开，向下扎根。
+        </p>
+      </div>
+      
+      <div class="flex flex-col lg:flex-row gap-12 items-center">
+        <div class="lg:w-1/2">
+          <div class="relative">
+            <img src="travel_20250626210634.jpg" alt="关于我" class="w-full h-auto rounded-2xl shadow-xl">
+            <div class="absolute -bottom-6 -right-6 bg-primary text-white p-4 rounded-xl shadow-lg hidden lg:block">
+              <p class="font-bold">旅行足迹</p>
+              <p class="text-sm">23省份 & 45+城市</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="lg:w-1/2">
+          <h3 class="text-2xl font-bold mb-6">你好，我是一位旅行爱好者</h3>
+          <p class="text-gray-600 mb-6">
+            从小就对祖国的大好河山充满向往，上大学后后开始了我的国内旅行计划。从江南水乡到西北荒漠，从北方雪原到西南边陲，我用脚步丈量着这片神奇的土地。
+          </p>
+          <p class="text-gray-600 mb-6">
+            我相信旅行不仅是看风景，更是感受不同地域的文化与生活。我喜欢深入当地市集，品尝地道小吃，与当地人聊天，记录下每个地方的独特魅力。生活不止有出发和抵达，更多的是此刻。那些旅行中"凝固的时间点"是我生命中静水流深般永恒的力量。很高兴，我已经拥有了在世界上任何地方安放好自己的能力。
+          </p>
+          
+          <div class="mt-8 grid grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+              <div class="text-3xl font-bold text-primary mb-2">23</div>
+              <div class="text-gray-600">省份</div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+              <div class="text-3xl font-bold text-primary mb-2">45+</div>
+              <div class="text-gray-600">城市</div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+              <div class="text-3xl font-bold text-primary mb-2">5</div>
+              <div class="text-gray-600">地理区域</div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+              <div class="text-3xl font-bold text-primary mb-2">3000+</div>
+              <div class="text-gray-600">照片</div>
+            </div>
+          </div>
+          
+          <div class="mt-8 flex space-x-4">
+            <a href="#" class="bg-white text-primary hover:bg-primary hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 shadow-sm hover:shadow-md">
+              <i class="fa fa-instagram"></i>
+            </a>
+            <a href="#" class="bg-white text-primary hover:bg-primary hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 shadow-sm hover:shadow-md">
+              <i class="fa fa-weibo"></i>
+            </a>
+            <a href="#" class="bg-white text-primary hover:bg-primary hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 shadow-sm hover:shadow-md">
+              <i class="fa fa-weixin"></i>
+            </a>
+            <a href="#" class="bg-white text-primary hover:bg-primary hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 shadow-sm hover:shadow-md">
+              <i class="fa fa-youtube-play"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 订阅 -->
+  <section class="py-16 bg-primary text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-2xl md:text-3xl font-bold mb-4">不想错过我的旅行故事？</h2>
+      <p class="text-white/80 max-w-2xl mx-auto mb-8">
+        订阅我的旅行通讯，第一时间获取最新的旅行照片和故事
+      </p>
+      
+      <form class="max-w-lg mx-auto flex flex-col sm:flex-row gap-3">
+        <input type="email" placeholder="输入你的邮箱地址" class="flex-grow px-4 py-3 rounded-full focus:outline-none focus:ring-2 focus:ring-white text-dark">
+        <button type="submit" class="bg-white text-primary hover:bg-gray-100 font-medium px-6 py-3 rounded-full transition-colors duration-300 shadow-md hover:shadow-lg">
+          立即订阅 <i class="fa fa-paper-plane ml-2"></i>
+        </button>
+      </form>
+      
+      <p class="text-white/60 text-sm mt-4">
+        我们尊重你的隐私，绝不会分享你的邮箱地址
+      </p>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white pt-16 pb-8">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-4 gap-8 mb-12">
+        <div>
+          <h3 class="text-xl font-bold mb-6 flex items-center">
+            <i class="fa fa-paper-plane mr-2 text-primary"></i>
+            旅途印记
+          </h3>
+          <p class="text-gray-400 mb-6">
+            用镜头记录世界，用文字讲述故事，每一次旅行都是心灵的远航
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+              <i class="fa fa-instagram text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+              <i class="fa fa-weibo text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+              <i class="fa fa-weixin text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+              <i class="fa fa-youtube-play text-xl"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-6">快速链接</h4>
+          <ul class="space-y-3">
+            <li><a href="#hero" class="text-gray-400 hover:text-primary transition-colors">首页</a></li>
+            <li><a href="#highlights" class="text-gray-400 hover:text-primary transition-colors">旅行亮点</a></li>
+            <li><a href="#photos" class="text-gray-400 hover:text-primary transition-colors">照片集</a></li>
+            <li><a href="#stories" class="text-gray-400 hover:text-primary transition-colors">旅行故事</a></li>
+            <li><a href="#about" class="text-gray-400 hover:text-primary transition-colors">关于我</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-6">热门目的地</h4>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">川西自驾</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">云南古镇</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">江南水乡</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">寻味川渝</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">岭南风味</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-6">联系我</h4>
+          <ul class="space-y-3 text-gray-400">
+            <li class="flex items-start">
+              <i class="fa fa-envelope-o mt-1 mr-3 text-primary"></i>
+              <span>xxy137618@qq.com</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fa fa-map-marker mt-1 mr-3 text-primary"></i>
+              <span>中国广州市越秀区</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fa fa-phone mt-1 mr-3 text-primary"></i>
+              <span>+86 198 3762 9064</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+        <p>&copy; 2025 旅途印记. 保留所有权利.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 照片查看模态框 -->
+  <div id="photo-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="relative w-full max-w-6xl p-4">
+      <button id="close-modal" class="absolute top-4 right-4 text-white text-2xl hover:text-primary transition-colors z-10">
+        <i class="fa fa-times"></i>
+      </button>
+      
+      <div class="relative w-full h-full max-h-[80vh] flex items-center justify-center">
+        <img id="modal-photo" src="" alt="放大照片" class="max-w-full max-h-full rounded-xl shadow-2xl">
+      </div>
+      
+      <div class="mt-4 text-white text-center">
+        <h3 id="photo-title" class="text-xl font-bold"></h3>
+        <p id="photo-desc" class="text-gray-300"></p>
+        <div class="flex justify-center mt-4 space-x-4">
+          <button id="prev-photo" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-full transition-colors">
+            <i class="fa fa-chevron-left mr-1"></i> 上一张
+          </button>
+          <button id="next-photo" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-full transition-colors">
+            下一张 <i class="fa fa-chevron-right ml-1"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('py-2', 'shadow-md');
+        navbar.classList.remove('py-3', 'shadow-sm');
+      } else {
+        navbar.classList.add('py-3', 'shadow-sm');
+        navbar.classList.remove('py-2', 'shadow-md');
+      }
+    });
+    
+    // 移动端菜单切换
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+    });
+    
+    // 照片筛选功能
+    const photoFilters = document.querySelectorAll('.photo-filter');
+    const photoItems = document.querySelectorAll('.photo-item');
+    
+    photoFilters.forEach(filter => {
+      filter.addEventListener('click', function() {
+        // 移除所有激活状态
+        photoFilters.forEach(f => f.classList.remove('active', 'bg-primary', 'text-white'));
+        photoFilters.forEach(f => f.classList.add('bg-white', 'text-gray-700'));
+        
+        // 添加当前激活状态
+        this.classList.add('active', 'bg-primary', 'text-white');
+        this.classList.remove('bg-white', 'text-gray-700');
+        
+        const filterValue = this.getAttribute('data-filter');
+        
+        photoItems.forEach(item => {
+          if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+            item.style.display = 'block';
+            // 添加淡入动画
+            item.classList.add('opacity-0');
+            setTimeout(() => {
+              item.classList.remove('opacity-0');
+              item.classList.add('opacity-100', 'transition-opacity', 'duration-500');
+            }, 50);
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+    
+   
+// 照片查看功能
+let currentPhotoIndex = 0;
+let allPhotos = Array.from(document.querySelectorAll('.photo-item'));
+const photoModal = document.getElementById('photo-modal');
+const modalPhoto = document.getElementById('modal-photo');
+const photoTitle = document.getElementById('photo-title');
+const photoDesc = document.getElementById('photo-desc');
+const closeModal = document.getElementById('close-modal');
+const prevButton = document.getElementById('prev-photo');
+const nextButton = document.getElementById('next-photo');
+
+// 获取所有可见照片
+function getVisiblePhotos() {
+  return Array.from(document.querySelectorAll('.photo-item:not([style*="display: none"])'));
+}
+
+// 打开照片模态框
+function openPhotoModal(index) {
+  const visiblePhotos = getVisiblePhotos();
+  if (index < 0 || index >= visiblePhotos.length) return;
+  
+  currentPhotoIndex = index;
+  const photoItem = visiblePhotos[currentPhotoIndex];
+  
+  // 直接使用原始图片路径，不再替换
+  const imgSrc = photoItem.querySelector('.view-photo').getAttribute('data-src');
+  const title = photoItem.querySelector('h4').textContent;
+  const category = photoItem.querySelector('p').textContent;
+  
+  modalPhoto.src = imgSrc;
+  photoTitle.textContent = title;
+  photoDesc.textContent = category;
+  
+  photoModal.classList.remove('opacity-0', 'pointer-events-none');
+  document.body.style.overflow = 'hidden';
+  
+  // 更新导航按钮状态
+  prevButton.style.visibility = currentPhotoIndex === 0 ? 'hidden' : 'visible';
+  nextButton.style.visibility = currentPhotoIndex === visiblePhotos.length - 1 ? 'hidden' : 'visible';
+}
+
+// 为所有照片添加点击事件
+function bindPhotoClickEvents() {
+  document.querySelectorAll('.view-photo').forEach((button) => {
+    button.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const clickedItem = button.closest('.photo-item');
+      const visiblePhotos = getVisiblePhotos();
+      const visibleIndex = visiblePhotos.indexOf(clickedItem);
+      
+      if (visibleIndex !== -1) {
+        openPhotoModal(visibleIndex);
+      }
+    });
+  });
+}
+
+// 初始绑定点击事件
+bindPhotoClickEvents();
+
+// 关闭模态框
+function closePhotoModal() {
+  photoModal.classList.add('opacity-0', 'pointer-events-none');
+  document.body.style.overflow = '';
+}
+
+// 事件监听
+closeModal.addEventListener('click', closePhotoModal);
+photoModal.addEventListener('click', function(e) {
+  if (e.target === photoModal) {
+    closePhotoModal();
+  }
+});
+
+// 导航功能
+prevButton.addEventListener('click', () => {
+  if (currentPhotoIndex > 0) {
+    openPhotoModal(currentPhotoIndex - 1);
+  }
+});
+
+nextButton.addEventListener('click', () => {
+  const visiblePhotos = getVisiblePhotos();
+  if (currentPhotoIndex < visiblePhotos.length - 1) {
+    openPhotoModal(currentPhotoIndex + 1);
+  }
+});
+
+// 键盘导航
+document.addEventListener('keydown', (e) => {
+  if (!photoModal.classList.contains('opacity-0')) {
+    const visiblePhotos = getVisiblePhotos();
+    if (e.key === 'ArrowLeft' && currentPhotoIndex > 0) {
+      openPhotoModal(currentPhotoIndex - 1);
+    } else if (e.key === 'ArrowRight' && currentPhotoIndex < visiblePhotos.length - 1) {
+      openPhotoModal(currentPhotoIndex + 1);
+    } else if (e.key === 'Escape') {
+      closePhotoModal();
+    }
+  }
+});
+
+// 加载更多功能
+document.getElementById('load-more').addEventListener('click', function() {
+  const loadMoreBtn = this;
+  loadMoreBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> 加载中...';
+  loadMoreBtn.disabled = true;
+  
+  setTimeout(() => {
+    // 移除了张家界、西安城墙和重庆小面的照片
+    const newPhotos = [];
+    
+    const photoGrid = document.querySelector('.photo-grid');
+    
+    newPhotos.forEach(photo => {
+      const photoItem = document.createElement('div');
+      photoItem.className = 'photo-item group';
+      photoItem.setAttribute('data-category', photo.category);
+      
+      photoItem.innerHTML = `
+        <div class="relative overflow-hidden rounded-xl shadow-lg">
+          <img src="https://picsum.photos/id/${photo.id}/800/600" alt="${photo.title}" 
+               class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+          <div class="photo-overlay">
+            <button class="view-photo bg-white text-primary p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300" 
+                    data-src="https://picsum.photos/id/${photo.id}/1200/800" 
+                    data-title="${photo.title}">
+              <i class="fa fa-search-plus text-xl"></i>
+            </button>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+            <h4 class="text-white font-medium">${photo.title}</h4>
+            <p class="text-white/80 text-sm">${photo.desc}</p>
+          </div>
+        </div>
+      `;
+      
+      photoGrid.appendChild(photoItem);
+    });
+    
+    // 更新照片数组并重新绑定事件
+    allPhotos = Array.from(document.querySelectorAll('.photo-item'));
+    bindPhotoClickEvents();
+    
+    loadMoreBtn.innerHTML = '加载更多照片 <i class="fa fa-refresh ml-2"></i>';
+    loadMoreBtn.disabled = false;
+    
+    if (document.querySelectorAll('.photo-item').length > 15) {
+      loadMoreBtn.style.display = 'none';
+    }
+  }, 1000);
+});
+      // 页面加载动画
+    window.addEventListener('load', function() {
+      document.body.classList.add('loaded');
+    });
+  </script>
+</body>
+</html>
